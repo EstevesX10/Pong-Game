@@ -1,3 +1,4 @@
+import neat.genome
 import pygame
 import os
 import neat
@@ -5,7 +6,7 @@ import pickle
 from Pong import (SCREEN_WIDTH, SCREEN_HEIGHT, Game)
 
 class Train_AI_Pong_Game:
-    def __init__(self, Window, Width, Height) -> None:
+    def __init__(self, Window:pygame.Surface, Width:int, Height:int) -> None:
         # Creating a instance of the Game Class
         self.game = Game(Window, Width, Height)
 
@@ -14,7 +15,7 @@ class Train_AI_Pong_Game:
         self.right_paddle = self.game.right_paddle
         self.ball = self.game.ball
 
-    def Train_AI(self, Genome_1, Genome_2, config):
+    def Train_AI(self, Genome_1:neat.genome, Genome_2:neat.genome, config:neat.Config) -> None:
         # Creating 2 Networks for each "AI" player
         Network_1 = neat.nn.FeedForwardNetwork.create(Genome_1, config)
         Network_2 = neat.nn.FeedForwardNetwork.create(Genome_2, config)
@@ -39,7 +40,6 @@ class Train_AI_Pong_Game:
             else: # Move Down
                 self.game.move_paddle(left=True, up=False)
 
-
             # Feed the Right Paddle's Network with the y pos of the padde, the y pos of the ball and the distance between the paddle and the ball
             Output_Network_2 = Network_2.activate((self.right_paddle.y, self.ball.y, abs(self.right_paddle.x - self.ball.x)))
             # Save the best decision threshold [the one that allowed to obtain the greater output]
@@ -62,11 +62,11 @@ class Train_AI_Pong_Game:
                 self.Calculate_Fitness_Score(Genome_1, Genome_2, Game_Info)
                 break
 
-    def Calculate_Fitness_Score(self, Genome_1, Genome_2, Game_Info:Game):
+    def Calculate_Fitness_Score(self, Genome_1:neat.genome, Genome_2:neat.genome, Game_Info:Game) -> None:
         Genome_1.fitness += Game_Info.left_hits
         Genome_2.fitness += Game_Info.right_hits
 
-def Evaluate_Genomes(genomes, config):
+def Evaluate_Genomes(genomes:neat.Population, config:neat.Config) -> None:
     """Score function used to evaluate the performance of a given genome"""
     
     # Creating a Window
@@ -82,12 +82,13 @@ def Evaluate_Genomes(genomes, config):
             game = Train_AI_Pong_Game(Window, SCREEN_WIDTH, SCREEN_HEIGHT)
             game.Train_AI(Genome_1, Genome_2, config)
 
-def Run_NEAT(config):
+def Run_NEAT(config:neat.Config, save_model:bool=True) -> None:
     # To start from a Checkpoint we would load it instead of creating one from scratch
     # population = neat.Checkpointer.restore_checkpoint('<CHECKPOINT_PATH>')
 
     # Creating a Population
     population = neat.Population(config)
+    
     # Report Data to the Standard Output
     population.add_reporter(neat.StdOutReporter(True))
     stats = neat.StatisticsReporter()
@@ -98,14 +99,16 @@ def Run_NEAT(config):
 
     # Passing a function Evaluate_Genomes to evaluate the performance of each genome at each new generation
     # This process goes on for a maximum of 50 generations
-    best_neural_network = population.run(Evaluate_Genomes, 50)
+    best_neural_network = population.run(Evaluate_Genomes, 2)
 
-    # Pickle helps to save an entire python object [In this case we are saving the best NN obtained by the Algorithm]
-    with open("Best_Neural_Network.pickle", "wb") as f:
-        pickle.dump(best_neural_network, f)
+    # Save the Trained Model
+    if save_model:
+        # Pickle helps to save an entire python object [In this case we are saving the best NN obtained by the Algorithm]
+        with open("Best_Neural_Network.pickle", "wb") as f:
+            pickle.dump(best_neural_network, f)
 
 if __name__ == "__main__":
     local_dir = os.path.dirname(__file__)
     configuration_path = os.path.join(local_dir, "config.txt")
     configuration = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, configuration_path)
-    Run_NEAT(configuration)
+    Run_NEAT(configuration, save_model=False)
