@@ -1,18 +1,28 @@
-from .Paddle import Paddle
-from .Ball import Ball
+from .Paddle import (Paddle)
+from .Ball import (Ball)
 import pygame
 import random
 from .Constants import (SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK, RED)
 
-pygame.init()
-
 class GameInformation:
-    def __init__(self, left_hits, right_hits, left_score, right_score):
-        self.left_hits = left_hits
-        self.right_hits = right_hits
-        self.left_score = left_score
-        self.right_score = right_score
+    def __init__(self, left_hits=None, right_hits=None, left_score=None, right_score=None):
+        self.left_hits = 0 if left_hits is None else left_hits
+        self.right_hits = 0 if right_hits is None else right_hits
+        self.left_score = 0 if left_score is None else left_score
+        self.right_score = 0 if right_score is None else right_score
     
+    def _update_score(self, left=False):
+        if left:
+            self.left_score += 1
+        else:
+            self.right_score += 1
+
+    def _update_hits(self, left=False):
+        if left:
+            self.left_hits += 1
+        else:
+            self.right_hits += 1
+
     def __str__(self):
         return (f"LEFT PLAYER [{self.left_score}] : [{self.right_score}] RIGHT PLAYER")
 
@@ -32,21 +42,18 @@ class Game:
         self.right_paddle = Paddle(SCREEN_WIDTH - 10 - Paddle.WIDTH, SCREEN_HEIGHT // 2 - Paddle.HEIGHT // 2)
         self.ball = Ball(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-        # Variables to keep track of the scores and hits per player
-        self.left_score = 0
-        self.right_score = 0
-        self.left_hits = 0
-        self.right_hits = 0
+        # Creating an instance of Game Information to keep track of the scores and hits per player
+        self.game_info = GameInformation()
 
     def _draw_score(self, Window):
-        left_score_text = self.SCORE_FONT.render(f"{self.left_score}", 1, WHITE)
-        right_score_text = self.SCORE_FONT.render(f"{self.right_score}", 1, WHITE)
+        left_score_text = self.SCORE_FONT.render(f"{self.game_info.left_score}", 1, WHITE)
+        right_score_text = self.SCORE_FONT.render(f"{self.game_info.right_score}", 1, WHITE)
         
         Window.blit(left_score_text, (SCREEN_WIDTH // 4 - left_score_text.get_width() // 2, 20))
         Window.blit(right_score_text, (SCREEN_WIDTH * (3/4) - right_score_text.get_width() // 2, 20))
 
     def _draw_hits(self, Window):
-        hits_text = self.SCORE_FONT.render(f"{self.left_hits + self.right_hits}", 1, RED)
+        hits_text = self.SCORE_FONT.render(f"{self.game_info.left_hits + self.game_info.right_hits}", 1, RED)
         Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, 10))
 
     def _draw_divider(self, Window):
@@ -74,7 +81,7 @@ class Game:
                     reduction_factor = (Paddle.HEIGHT / 2) / ball.MAX_VEL
                     y_vel = difference_in_y / reduction_factor
                     ball.y_vel = -1 * y_vel
-                    self.left_hits += 1
+                    self.game_info._update_hits(left=True)
 
         else:
             if ball.y >= right_paddle.y and ball.y <= right_paddle.y + Paddle.HEIGHT:
@@ -85,7 +92,7 @@ class Game:
                     reduction_factor = (Paddle.HEIGHT / 2) / ball.MAX_VEL
                     y_vel = difference_in_y / reduction_factor
                     ball.y_vel = -1 * y_vel
-                    self.right_hits += 1
+                    self.game_info._update_hits(left=False)
 
     def draw(self, Window, draw_score=True, draw_hits=False):
         Window.fill(BLACK)
@@ -137,25 +144,20 @@ class Game:
 
         if self.ball.x < 0:
             self.ball.reset()
-            self.right_score += 1
+            self.game_info._update_score(left=False)
 
         elif self.ball.x > SCREEN_WIDTH:
             self.ball.reset()
-            self.left_score += 1
+            self.game_info._update_score(left=True)
 
-        game_info = GameInformation(self.left_hits, self.right_hits, self.left_score, self.right_score)
-
-        return game_info
+        return self.game_info
 
     def reset(self):
         """Resets the entire game."""
         self.ball.reset()
         self.left_paddle.reset()
         self.right_paddle.reset()
-        self.left_score = 0
-        self.right_score = 0
-        self.left_hits = 0
-        self.right_hits = 0
+        self.game_info = GameInformation()
 
 if __name__ == "__main__":
     pygame.init()
