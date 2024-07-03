@@ -1,0 +1,14 @@
+name: Pong
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pip==23.3.1
+  - setuptools==65.5.0
+  - python==3.8
+  - numpy==1.23.1
+  - matplotlib==3.7.3
+  - jupyter==1.0.0
+  - neat-python==0.92
+  - pip:
+    - pygame==2.5.2
