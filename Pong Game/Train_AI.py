@@ -1,4 +1,3 @@
-import neat.genome
 import pygame
 import os
 import neat
@@ -15,7 +14,7 @@ class Train_AI_Pong_Game:
         self.right_paddle = self.game.right_paddle
         self.ball = self.game.ball
 
-    def Train_AI(self, Genome_1:neat.genome, Genome_2:neat.genome, config:neat.Config) -> None:
+    def Train_AI(self, Genome_1:neat.DefaultGenome, Genome_2:neat.DefaultGenome, config:neat.Config) -> None:
         # Creating 2 Networks for each "AI" player
         Network_1 = neat.nn.FeedForwardNetwork.create(Genome_1, config)
         Network_2 = neat.nn.FeedForwardNetwork.create(Genome_2, config)
@@ -62,7 +61,7 @@ class Train_AI_Pong_Game:
                 self.Calculate_Fitness_Score(Genome_1, Genome_2, Game_Info)
                 break
 
-    def Calculate_Fitness_Score(self, Genome_1:neat.genome, Genome_2:neat.genome, Game_Info:Game) -> None:
+    def Calculate_Fitness_Score(self, Genome_1:neat.DefaultGenome, Genome_2:neat.DefaultGenome, Game_Info:Game) -> None:
         Genome_1.fitness += Game_Info.left_hits
         Genome_2.fitness += Game_Info.right_hits
 
@@ -99,7 +98,7 @@ def Run_NEAT(config:neat.Config, save_model:bool=True) -> None:
 
     # Passing a function Evaluate_Genomes to evaluate the performance of each genome at each new generation
     # This process goes on for a maximum of 50 generations
-    best_neural_network = population.run(Evaluate_Genomes, 2)
+    best_neural_network = population.run(Evaluate_Genomes, 50)
 
     # Save the Trained Model
     if save_model:
