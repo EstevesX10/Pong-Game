@@ -26,43 +26,41 @@ class Game:
     """
     SCORE_FONT = pygame.font.SysFont("comicsans", 50)
 
-    def __init__(self, window, window_width, window_height):
-        self.window_width = window_width
-        self.window_height = window_height
+    def __init__(self):
+        # Referencing the Game Elements
+        self.left_paddle = Paddle(10, SCREEN_HEIGHT // 2 - Paddle.HEIGHT // 2)
+        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - Paddle.WIDTH, SCREEN_HEIGHT // 2 - Paddle.HEIGHT // 2)
+        self.ball = Ball(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
-        self.left_paddle = Paddle(10, self.window_height // 2 - Paddle.HEIGHT // 2)
-        self.right_paddle = Paddle(self.window_width - 10 - Paddle.WIDTH, self.window_height // 2 - Paddle.HEIGHT // 2)
-        self.ball = Ball(self.window_width // 2, self.window_height // 2)
-
+        # Variables to keep track of the scores and hits per player
         self.left_score = 0
         self.right_score = 0
         self.left_hits = 0
         self.right_hits = 0
-        self.window = window
 
-    def _draw_score(self):
+    def _draw_score(self, Window):
         left_score_text = self.SCORE_FONT.render(f"{self.left_score}", 1, WHITE)
         right_score_text = self.SCORE_FONT.render(f"{self.right_score}", 1, WHITE)
         
-        self.window.blit(left_score_text, (self.window_width // 4 - left_score_text.get_width() // 2, 20))
-        self.window.blit(right_score_text, (self.window_width * (3/4) - right_score_text.get_width() // 2, 20))
+        Window.blit(left_score_text, (SCREEN_WIDTH // 4 - left_score_text.get_width() // 2, 20))
+        Window.blit(right_score_text, (SCREEN_WIDTH * (3/4) - right_score_text.get_width() // 2, 20))
 
-    def _draw_hits(self):
+    def _draw_hits(self, Window):
         hits_text = self.SCORE_FONT.render(f"{self.left_hits + self.right_hits}", 1, RED)
-        self.window.blit(hits_text, (self.window_width // 2 - hits_text.get_width() // 2, 10))
+        Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, 10))
 
-    def _draw_divider(self):
-        for i in range(10, self.window_height, self.window_height//20):
+    def _draw_divider(self, Window):
+        for i in range(10, SCREEN_HEIGHT, SCREEN_HEIGHT//20):
             if i % 2 == 1:
                 continue
-            pygame.draw.rect(self.window, WHITE, (self.window_width // 2 - 5, i, 10, self.window_height // 20))
+            pygame.draw.rect(Window, WHITE, (SCREEN_WIDTH // 2 - 5, i, 10, SCREEN_HEIGHT // 20))
 
     def _handle_collision(self):
         ball = self.ball
         left_paddle = self.left_paddle
         right_paddle = self.right_paddle
 
-        if ball.y + ball.RADIUS >= self.window_height:
+        if ball.y + ball.RADIUS >= SCREEN_HEIGHT:
             ball.y_vel *= -1
         elif ball.y - ball.RADIUS <= 0:
             ball.y_vel *= -1
@@ -71,7 +69,6 @@ class Game:
             if ball.y >= left_paddle.y and ball.y <= left_paddle.y + Paddle.HEIGHT:
                 if ball.x - ball.RADIUS <= left_paddle.x + Paddle.WIDTH:
                     ball.x_vel *= -1
-
                     middle_y = left_paddle.y + Paddle.HEIGHT / 2
                     difference_in_y = middle_y - ball.y
                     reduction_factor = (Paddle.HEIGHT / 2) / ball.MAX_VEL
@@ -83,7 +80,6 @@ class Game:
             if ball.y >= right_paddle.y and ball.y <= right_paddle.y + Paddle.HEIGHT:
                 if ball.x + ball.RADIUS >= right_paddle.x:
                     ball.x_vel *= -1
-
                     middle_y = right_paddle.y + Paddle.HEIGHT / 2
                     difference_in_y = middle_y - ball.y
                     reduction_factor = (Paddle.HEIGHT / 2) / ball.MAX_VEL
@@ -91,9 +87,9 @@ class Game:
                     ball.y_vel = -1 * y_vel
                     self.right_hits += 1
 
-    def draw(self, draw_score=True, draw_hits=False):
-        self.window.fill(BLACK)
-        self._draw_divider()
+    def draw(self, Window, draw_score=True, draw_hits=False):
+        Window.fill(BLACK)
+        self._draw_divider(Window)
 
         if draw_score:
             self._draw_score()
@@ -102,9 +98,9 @@ class Game:
             self._draw_hits()
 
         for paddle in [self.left_paddle, self.right_paddle]:
-            paddle.draw(self.window)
+            paddle.draw(Window)
 
-        self.ball.draw(self.window)
+        self.ball.draw(Window)
 
     def move_paddle(self, left=True, up=True):
         """
@@ -117,13 +113,13 @@ class Game:
         if left:
             if up and self.left_paddle.y - Paddle.VEL < 0:
                 return False
-            if not up and self.left_paddle.y + Paddle.HEIGHT > self.window_height:
+            if not up and self.left_paddle.y + Paddle.HEIGHT > SCREEN_HEIGHT:
                 return False
             self.left_paddle.move(up)
         else:
             if up and self.right_paddle.y - Paddle.VEL < 0:
                 return False
-            if not up and self.right_paddle.y + Paddle.HEIGHT > self.window_height:
+            if not up and self.right_paddle.y + Paddle.HEIGHT > SCREEN_HEIGHT:
                 return False
             self.right_paddle.move(up)
 
@@ -143,7 +139,7 @@ class Game:
             self.ball.reset()
             self.right_score += 1
 
-        elif self.ball.x > self.window_width:
+        elif self.ball.x > SCREEN_WIDTH:
             self.ball.reset()
             self.left_score += 1
 
@@ -164,6 +160,6 @@ class Game:
 if __name__ == "__main__":
     pygame.init()
     WINDOW = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-    game = Game(WINDOW, SCREEN_WIDTH, SCREEN_HEIGHT)
+    game = Game(WINDOW)
     outcome = game.loop()
     print(outcome)

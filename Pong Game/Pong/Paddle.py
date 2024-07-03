@@ -7,23 +7,19 @@ class Paddle:
     WIDTH = PADDLE_WIDTH
     HEIGHT = PADDLE_HEIGHT
 
-    def __init__(self, X, Y):
+    def __init__(self, X:int, Y:int) -> None:
         self.initial_x = self.x = X
         self.initial_y = self.y = Y
 
-    def draw(self, window):
-        pygame.draw.rect(window, self.COLOR, (self.x, self.y, self.WIDTH, self.HEIGHT))
+    def draw(self, Window:pygame.Surface) -> None:
+        pygame.draw.rect(Window, self.COLOR, (self.x, self.y, self.WIDTH, self.HEIGHT))
 
-    def move(self, up=True):
+    def move(self, up:bool=True) -> None:
         if (up):
             self.y -= self.VEL
         else:
             self.y += self.VEL
 
-    def reset(self):
+    def reset(self) -> None:
         self.x = self.initial_x
         self.y = self.initial_y
-
-if __name__ == "__main__":
-    pygame.init()
-    # TEST CODE HERE    
