@@ -8,6 +8,7 @@ FPS = 60
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+GREY = (58,58,58) 
 
 LIGHT_BLUE = (135, 206, 250)
 BLUE = (102, 178, 255)
