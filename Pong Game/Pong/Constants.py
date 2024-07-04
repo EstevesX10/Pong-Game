@@ -8,7 +8,16 @@ FPS = 60
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-RED = (255, 0, 0)
+
+LIGHT_BLUE = (135, 206, 250)
+BLUE = (102, 178, 255)
+DARK_BLUE = (0, 76, 153)
+
+RED = (189, 22, 44)
+DARK_RED = (151, 18, 35)
+
+GREEN = (0, 204, 102)
+DARK_GREEN = (0, 153, 76)
 
 # Paddle Parameters
 PADDLE_WIDTH = 20
