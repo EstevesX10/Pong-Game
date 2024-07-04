@@ -4,7 +4,7 @@ import os
 import neat
 import pickle
 from Pong import (SCREEN_WIDTH, SCREEN_HEIGHT, Game)
-from Pong.Constants import (LIGHT_BLUE)
+from Pong.Constants import (BLACK, WHITE, GREY, LIGHT_BLUE)
 from Widgets import (Button, Image)
 
 class PongGame:
@@ -29,6 +29,12 @@ class PongGame:
         # Create a Network for the best genome
         self.network = neat.nn.FeedForwardNetwork.create(Best_Genome, Config)
 
+    def write(self, font:str, text:str, size:tuple, color:str, bg_color:str, bold:bool, pos:tuple) -> None:
+        # Writes Text into the Screen
+        letra = pygame.font.SysFont(font, size, bold)
+        frase = letra.render(text, 1, color, bg_color)
+        self.window.blit(frase, pos)
+
     def run(self) -> None:
         # Customizing the Window
         pygame.display.set_caption("Pong Game")
@@ -37,11 +43,25 @@ class PongGame:
 
         # Variable to store the current menu
         menu = "Main_Menu"
+        # menu = "Modes_Menu"
         # menu = "PVP"
 
+        # Creating Wallpapers
+        BG_IMG = pygame.image.load('./Assets/Pong_Game_BG.jpg').convert_alpha()
+        Main_Menu = Image(BG_IMG, -160, 65, .4)
+
         # Creating Buttons
+        START_IMG = pygame.image.load('./Assets/Start.png').convert_alpha()
+        Start_Btn = Button(START_IMG, 420, 190, 0.4)
+
         BACK_IMG = pygame.image.load('./Assets/Back.png').convert_alpha()
-        Back_Btn = Button(BACK_IMG, 100, 100, 0.1)
+        Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
+
+        PVP_IMG = pygame.image.load('./Assets/PVP.png').convert_alpha()
+        PVP_Btn = Button(PVP_IMG, 160, 190, 0.22)
+
+        AI_IMG = pygame.image.load('./Assets/AI.png').convert_alpha()
+        AI_Btn = Button(AI_IMG, 440, 190, 0.22)
 
         # Flag to control the flow of the game
         run = True
@@ -58,14 +78,30 @@ class PongGame:
                     break
             
             if menu == "Main_Menu":
-                self.window.fill(LIGHT_BLUE)
-                if (Back_Btn.Action(self.window)):
-                    run = False
+                # Customizing the Main Menu of the Application
+                self.window.fill(GREY)
+                Main_Menu.Display(self.window)
+                self.write(font='Arial', text=" Pong Game ", size=50, color=GREY, bg_color=WHITE, bold=True, pos=((SCREEN_WIDTH - 230) // 2, 40))
+
+                # Use a Start Button to initialize the Game
+                if Start_Btn.Action(self.window):
+                    menu = "Modes_Menu"
 
             elif menu == "Modes_Menu":
-                self.window.fill(LIGHT_BLUE)
+                # Reset the Game every time we switch Game Mode
+                self.game.reset()
+
+                # Customizing the Section of the App
+                self.window.fill(GREY)  
+                self.write(font='Arial', text=" Game Modes ", size=50, color=GREY, bg_color=WHITE, bold=True, pos=((SCREEN_WIDTH - 280) // 2, 60))
+                
+                # Use Buttons to manage the flow of the application
                 if (Back_Btn.Action(self.window)):
                     menu = "Main_Menu"
+                if (AI_Btn.Action(self.window)):
+                    menu = "AI"
+                if (PVP_Btn.Action(self.window)):
+                    menu = "PVP"
 
             elif menu == "PVP":
                 # Getting the list of keys the user has pressed
@@ -97,9 +133,9 @@ class PongGame:
                 keys = pygame.key.get_pressed()
 
                 # Setting the Paddle's Movement Mechanics
-                if keys[pygame.K_w]: # Left Paddle Up
+                if keys[pygame.K_w] or keys[pygame.K_UP]: # Left Paddle Up
                     self.game.move_paddle(left=True, up=True)
-                if keys[pygame.K_s]: # Left Paddle Down
+                if keys[pygame.K_s] or keys[pygame.K_DOWN]: # Left Paddle Down
                     self.game.move_paddle(left=True, up=False)
                 
                 # Bind the R key to easily restart the Game
