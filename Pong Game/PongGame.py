@@ -93,8 +93,10 @@ class PongGame:
 
                 # Customizing the Section of the App
                 self.window.fill(GREY)  
-                self.write(font='Arial', text=" Game Modes ", size=50, color=GREY, bg_color=WHITE, bold=True, pos=((SCREEN_WIDTH - 280) // 2, 60))
-                
+                self.write(font='Arial', text=" Game Modes ", size=40, color=GREY, bg_color=WHITE, bold=True, pos=(250, 60))
+                self.write(font='Arial', text=" PVP ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(185, 330))
+                self.write(font='Arial', text=" AI → NEAT ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(422, 330))
+
                 # Use Buttons to manage the flow of the application
                 if (Back_Btn.Action(self.window)):
                     menu = "Main_Menu"
