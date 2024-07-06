@@ -1,6 +1,6 @@
 <div align="center">
 
-# Project Dependencies & Execution
+# Project Dependencies
 </div>
 
 This project was developed using a **[Anaconda Distribution](https://www.anaconda.com/)** in order to execute it.
@@ -18,7 +18,3 @@ Or use it inside a `jupyter notebook's code cell`:
 Another approach would be to `Create a New Anaconda Environment` with all the dependencies already installed. To do so, type:
 
     conda env create -f Pong.yml
-
-## Execution
-
-> ADD EXECUTION
