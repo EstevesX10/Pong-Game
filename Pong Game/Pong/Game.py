@@ -1,7 +1,7 @@
 from .Paddle import (Paddle)
 from .Ball import (Ball)
 import pygame
-from .Constants import (SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK, RED)
+from .Constants import (SCREEN_PADDING, SCREEN_WIDTH, SCREEN_HEIGHT, WHITE, BLACK, RED)
 
 class GameInformation:
     def __init__(self, left_hits:int=None, right_hits:int=None, left_score:int=None, right_score:int=None) -> None:
@@ -38,9 +38,9 @@ class Game:
 
     def __init__(self) -> None:
         # Referencing the Game Elements
-        self.left_paddle = Paddle(10, SCREEN_HEIGHT // 2 - Paddle.HEIGHT // 2)
-        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - Paddle.WIDTH, SCREEN_HEIGHT // 2 - Paddle.HEIGHT // 2)
-        self.ball = Ball(SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
+        self.left_paddle = Paddle(SCREEN_PADDING + 10, (SCREEN_HEIGHT - 2 * SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING)
+        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - SCREEN_PADDING - Paddle.WIDTH, (SCREEN_HEIGHT - 2 * SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING)
+        self.ball = Ball((SCREEN_WIDTH - 2 * SCREEN_PADDING) // 2 + SCREEN_PADDING, (SCREEN_HEIGHT - 2 * SCREEN_PADDING) // 2 + SCREEN_PADDING)
 
         # Creating an instance of Game Information to keep track of the scores and hits per player
         self.game_info = GameInformation()
@@ -57,19 +57,19 @@ class Game:
         Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, 10))
 
     def _draw_divider(self, Window:pygame.Surface) -> None:
-        for i in range(10, SCREEN_HEIGHT, SCREEN_HEIGHT//20):
+        for i in range(SCREEN_PADDING + 10, SCREEN_HEIGHT - SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 20):
             if i % 2 == 1:
                 continue
-            pygame.draw.rect(Window, WHITE, (SCREEN_WIDTH // 2 - 5, i, 10, SCREEN_HEIGHT // 20))
+            pygame.draw.rect(Window, WHITE, ((SCREEN_WIDTH - 2 * SCREEN_PADDING) // 2 - 5 + SCREEN_PADDING, i, 5, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 20))
 
     def _handle_collision(self) -> None:
         ball = self.ball
         left_paddle = self.left_paddle
         right_paddle = self.right_paddle
 
-        if ball.y + ball.RADIUS >= SCREEN_HEIGHT:
+        if ball.y + ball.RADIUS >= SCREEN_HEIGHT - SCREEN_PADDING:
             ball.y_vel *= -1
-        elif ball.y - ball.RADIUS <= 0:
+        elif ball.y - ball.RADIUS <= SCREEN_PADDING:
             ball.y_vel *= -1
 
         if ball.x_vel < 0:
@@ -96,6 +96,7 @@ class Game:
 
     def draw(self, Window:pygame.Surface, draw_score:bool=True, draw_hits:bool=False) -> None:
         Window.fill(BLACK)
+        pygame.draw.rect(Window, RED, (SCREEN_PADDING, SCREEN_PADDING, SCREEN_WIDTH - 2*SCREEN_PADDING, SCREEN_HEIGHT - 2*SCREEN_PADDING), 0, 10)
         self._draw_divider(Window)
 
         if draw_score:
@@ -118,15 +119,15 @@ class Game:
                   off the screen
         """
         if left:
-            if up and self.left_paddle.y - Paddle.VEL < 0:
+            if up and self.left_paddle.y - Paddle.VEL < SCREEN_PADDING:
                 return False
-            if not up and self.left_paddle.y + Paddle.HEIGHT > SCREEN_HEIGHT:
+            if not up and self.left_paddle.y + Paddle.HEIGHT > SCREEN_HEIGHT - SCREEN_PADDING - 2:
                 return False
             self.left_paddle.move(up)
         else:
-            if up and self.right_paddle.y - Paddle.VEL < 0:
+            if up and self.right_paddle.y - Paddle.VEL < SCREEN_PADDING:
                 return False
-            if not up and self.right_paddle.y + Paddle.HEIGHT > SCREEN_HEIGHT:
+            if not up and self.right_paddle.y + Paddle.HEIGHT > SCREEN_HEIGHT - SCREEN_PADDING - 2:
                 return False
             self.right_paddle.move(up)
 
@@ -142,11 +143,11 @@ class Game:
         self.ball.move()
         self._handle_collision()
 
-        if self.ball.x < 0:
+        if self.ball.x < SCREEN_PADDING:
             self.ball.reset()
             self.game_info._update_score(left=False)
 
-        elif self.ball.x > SCREEN_WIDTH:
+        elif self.ball.x > SCREEN_WIDTH - SCREEN_PADDING:
             self.ball.reset()
             self.game_info._update_score(left=True)
 
