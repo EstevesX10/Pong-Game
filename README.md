@@ -11,7 +11,7 @@
 
 <div align="center">
     <a>
-        <img src="https://img.shields.io/badge/Made%20with-Jupyter-white?style=for-the-badge&logo=Jupyter&logoColor=white">
+        <img src="https://img.shields.io/badge/Made%20with-Python-white?style=for-the-badge&logo=Python&logoColor=white">
     </a>
 </div>
 
