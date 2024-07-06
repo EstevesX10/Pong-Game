@@ -1,19 +1,23 @@
 import pygame
+pygame.init()
 import os
 import neat
 import pickle
 from Pong import (SCREEN_WIDTH, SCREEN_HEIGHT, Game)
 
 class Train_AI_Pong_Game:
-    def __init__(self, Window:pygame.Surface, Width:int, Height:int) -> None:
+    def __init__(self, Window:pygame.Surface) -> None:
+        # Saving the Window
+        self.window = Window
+
         # Creating a instance of the Game Class
-        self.game = Game(Window, Width, Height)
+        self.game = Game()
 
         # Saving the Game's Paddles as well as the Ball
         self.left_paddle = self.game.left_paddle
         self.right_paddle = self.game.right_paddle
         self.ball = self.game.ball
-
+        
     def Train_AI(self, Genome_1:neat.DefaultGenome, Genome_2:neat.DefaultGenome, config:neat.Config) -> None:
         # Creating 2 Networks for each "AI" player
         Network_1 = neat.nn.FeedForwardNetwork.create(Genome_1, config)
@@ -53,7 +57,7 @@ class Train_AI_Pong_Game:
                 self.game.move_paddle(left=False, up=False)
 
             Game_Info = self.game.loop()
-            self.game.draw(draw_score=False, draw_hits=True)
+            self.game.draw(self.window, draw_score=False, draw_hits=True)
             pygame.display.update()
 
             # End the Game and Discard the worst paddle [The one that missed the ball] (We also limit the max amount of hits we can obtain in order to prevent extensive trainning)
@@ -78,7 +82,7 @@ def Evaluate_Genomes(genomes:neat.Population, config:neat.Config) -> None:
         for Genome_ID2, Genome_2 in genomes[i+1:]:
             if Genome_2.fitness is None:
                 Genome_2.fitness = 0
-            game = Train_AI_Pong_Game(Window, SCREEN_WIDTH, SCREEN_HEIGHT)
+            game = Train_AI_Pong_Game(Window)
             game.Train_AI(Genome_1, Genome_2, config)
 
 def Run_NEAT(config:neat.Config, save_model:bool=True) -> None:
