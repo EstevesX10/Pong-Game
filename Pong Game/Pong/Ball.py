@@ -32,7 +32,7 @@ class Ball:
         y_val = -1 if self.y_vel >= 0 else 1
 
         # Drawing the Ball and it's shadow
-        pygame.draw.circle(Window, GREY, (self.x + 2*x_val, self.y + 2*y_val), self.RADIUS + 2)
+        pygame.draw.circle(Window, GREY, (self.x + x_val, self.y + y_val), self.RADIUS)
         pygame.draw.circle(Window, self.COLOR, (self.x, self.y), self.RADIUS)
 
     def move(self) -> None:
