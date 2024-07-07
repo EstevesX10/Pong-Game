@@ -43,7 +43,7 @@ class Game:
         # Referencing the Game Elements
         self.left_paddle = Paddle(SCREEN_PADDING + 10, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, LIGHT_BLUE)
         self.right_paddle = Paddle(SCREEN_WIDTH - 10 - SCREEN_PADDING - Paddle.WIDTH, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, WHITE)
-        self.ball = Ball((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING)
+        self.ball = Ball((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING, WHITE)
 
         # Creating an instance of Game Information to keep track of the scores and hits per player
         self.game_info = GameInformation()
@@ -58,13 +58,14 @@ class Game:
 
     def _draw_hits(self, Window:pygame.Surface) -> None:
         hits_text = self.SCORE_FONT.render(f"{self.game_info.left_hits + self.game_info.right_hits}", 1, RED)
-        Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, -7))
+        Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, 2))
 
     def _draw_divider(self, Window:pygame.Surface) -> None:
         for i in range(SCREEN_PADDING + 10, SCREEN_HEIGHT - SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 20):
             if i % 2 == 1:
                 continue
-            pygame.draw.rect(Window, WHITE, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 - 5 + SCREEN_PADDING, i, 5, (SCREEN_HEIGHT - SCREEN_PADDING) // 20))
+            pygame.draw.rect(Window, GREY, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 - 5 + SCREEN_PADDING - 1, i - 1, 7, (SCREEN_HEIGHT - SCREEN_PADDING) // 20 + 2))
+            pygame.draw.rect(Window, LIGHT_BLUE, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 - 5 + SCREEN_PADDING, i, 5, (SCREEN_HEIGHT - SCREEN_PADDING) // 20))
 
     def _handle_collision(self) -> None:
         ball = self.ball
