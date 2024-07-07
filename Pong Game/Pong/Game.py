@@ -37,12 +37,12 @@ class Game:
     .reset().
     """
 
-    SCORE_FONT = pygame.font.SysFont("comicsans", 50)
+    SCORE_FONT = pygame.font.SysFont("comicsans", 40)
 
     def __init__(self) -> None:
         # Referencing the Game Elements
         self.left_paddle = Paddle(SCREEN_PADDING + 10, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, LIGHT_BLUE)
-        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - SCREEN_PADDING - Paddle.WIDTH, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING)
+        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - SCREEN_PADDING - Paddle.WIDTH, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, WHITE)
         self.ball = Ball((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING)
 
         # Creating an instance of Game Information to keep track of the scores and hits per player
@@ -52,8 +52,8 @@ class Game:
         left_score_text = self.SCORE_FONT.render(f"{self.game_info.left_score}", 1, self.left_paddle.COLOR)
         right_score_text = self.SCORE_FONT.render(f"{self.game_info.right_score}", 1, self.right_paddle.COLOR)
         
-        Window.blit(left_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 4 - left_score_text.get_width() // 2 + SCREEN_PADDING + 70, -7))
-        Window.blit(right_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) * (3/4) - right_score_text.get_width() // 2 + SCREEN_PADDING - 70, -7))
+        Window.blit(left_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 4 - left_score_text.get_width() // 2 + SCREEN_PADDING + 70, 2))
+        Window.blit(right_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) * (3/4) - right_score_text.get_width() // 2 + SCREEN_PADDING - 70, 2))
         pygame.draw.rect(Window, WHITE, (SCREEN_WIDTH // 2 - 25, SCREEN_PADDING // 2 - 20, 50, 10), 0, 8)
 
     def _draw_hits(self, Window:pygame.Surface) -> None:
