@@ -52,9 +52,9 @@ class Game:
         left_score_text = self.SCORE_FONT.render(f"{self.game_info.left_score}", 1, self.left_paddle.COLOR)
         right_score_text = self.SCORE_FONT.render(f"{self.game_info.right_score}", 1, self.right_paddle.COLOR)
         
-        Window.blit(left_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 4 - left_score_text.get_width() // 2 + SCREEN_PADDING + 70, 2))
-        Window.blit(right_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) * (3/4) - right_score_text.get_width() // 2 + SCREEN_PADDING - 70, 2))
-        pygame.draw.rect(Window, WHITE, (SCREEN_WIDTH // 2 - 25, SCREEN_PADDING // 2 - 20, 50, 10), 0, 8)
+        Window.blit(left_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 4 - left_score_text.get_width() // 2 + SCREEN_PADDING + 75, 2))
+        Window.blit(right_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) * (3/4) - right_score_text.get_width() // 2 + SCREEN_PADDING - 80, 2))
+        pygame.draw.rect(Window, WHITE, (SCREEN_WIDTH // 2 - 28, SCREEN_PADDING // 2 - 20, 50, 10), 0, 8)
 
     def _draw_hits(self, Window:pygame.Surface) -> None:
         hits_text = self.SCORE_FONT.render(f"{self.game_info.left_hits + self.game_info.right_hits}", 1, RED)
