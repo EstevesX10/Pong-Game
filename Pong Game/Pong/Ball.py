@@ -6,11 +6,11 @@ from .Constants import (WHITE, BALL_RADIUS, BALL_MAX_VEL, GREY)
 class Ball:
     MAX_VEL = BALL_MAX_VEL # Defining the Max Velocity
     RADIUS = BALL_RADIUS # Defining the Ball's Radius
-    COLOR = WHITE # Defining the Ball's Color
 
-    def __init__(self, X:int, Y:int) -> None:
+    def __init__(self, X:int, Y:int, Color:tuple=None) -> None:
         self.initial_x = self.x = X
         self.initial_y = self.y = Y
+        self.COLOR = WHITE if Color is None else Color
         
         angle = self._get_random_angle(-30, 30, [0])
         pos = 1 if random.random() < 0.5 else -1
