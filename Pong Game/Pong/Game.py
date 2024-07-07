@@ -155,11 +155,11 @@ class Game:
         self.ball.move()
         self._handle_collision()
 
-        if self.ball.x < SCREEN_PADDING:
+        if self.ball.x - self.ball.RADIUS <= SCREEN_PADDING:
             self.ball.reset()
             self.game_info._update_score(left=False)
 
-        elif self.ball.x > SCREEN_WIDTH - SCREEN_PADDING:
+        elif self.ball.x + self.ball.RADIUS >= SCREEN_WIDTH - SCREEN_PADDING:
             self.ball.reset()
             self.game_info._update_score(left=True)
 
