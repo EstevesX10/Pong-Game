@@ -43,8 +43,6 @@ class PongGame:
 
         # Variable to store the current menu
         menu = "Main_Menu"
-        # menu = "Modes_Menu"
-        # menu = "PVP"
 
         # Creating Wallpapers
         BG_IMG = pygame.image.load('./Assets/Pong_Game_BG.jpg').convert_alpha()
@@ -66,6 +64,9 @@ class PongGame:
         # Flag to control the flow of the game
         run = True
 
+        # Flag to Control if the game is paused
+        paused = False
+
         # Creating a Clock to Control the Ball's Movement
         # by later limiting the number of frames to render
         clock = pygame.time.Clock()
@@ -76,7 +77,15 @@ class PongGame:
                 if event.type == pygame.QUIT:
                     run = False
                     break
-            
+                
+                # Checking if the game is to get paused or continued
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        if not paused:
+                            paused = True
+                        else:
+                            paused = False
+
             if menu == "Main_Menu":
                 # Customizing the Main Menu of the Application
                 self.window.fill(GREY)
@@ -90,6 +99,9 @@ class PongGame:
             elif menu == "Modes_Menu":
                 # Reset the Game every time we switch Game Mode
                 self.game.reset()
+
+                # Making sure the game is never set to paused in the Games Mode Menu
+                paused = False
 
                 # Customizing the Section of the App
                 self.window.fill(GREY)  
@@ -108,27 +120,32 @@ class PongGame:
             elif menu == "PVP":
                 # Getting the list of keys the user has pressed
                 keys = pygame.key.get_pressed()
-
-                # Setting the Paddle's Movement Mechanics
-                if keys[pygame.K_w]: # Left Paddle Up
-                    self.game.move_paddle(left=True, up=True)
-                if keys[pygame.K_s]: # Left Paddle Down
-                    self.game.move_paddle(left=True, up=False)
-                if keys[pygame.K_UP]: # Right Paddle Up
-                    self.game.move_paddle(left=False, up=True)
-                if keys[pygame.K_DOWN]: # Right Paddle Down
-                    self.game.move_paddle(left=False, up=False)
                 
-                # Bind the R key to easily restart the Game
-                if keys[pygame.K_r]:
-                    self.game.reset()
-            
-                self.game.loop()
-                self.game.draw(self.window, True, False)
+                if not paused:
+                    # Setting the Paddle's Movement Mechanics
+                    if keys[pygame.K_w]: # Left Paddle Up
+                        self.game.move_paddle(left=True, up=True)
+                    if keys[pygame.K_s]: # Left Paddle Down
+                        self.game.move_paddle(left=True, up=False)
+                    if keys[pygame.K_UP]: # Right Paddle Up
+                        self.game.move_paddle(left=False, up=True)
+                    if keys[pygame.K_DOWN]: # Right Paddle Down
+                        self.game.move_paddle(left=False, up=False)
 
-                # Return to Modes Menu [Using the Back_Btn]
-                if (Back_Btn.Action(self.window)):
-                    menu = "Modes_Menu"
+                    # Bind the R key to easily restart the Game
+                    if keys[pygame.K_r]:
+                        self.game.reset()
+                
+                    self.game.loop()
+                    self.game.draw(self.window, True, False)
+
+                    # Return to Modes Menu [Using the Back_Btn]
+                    if (Back_Btn.Action(self.window)):
+                        menu = "Modes_Menu"
+                
+                # Pause Sub-Menu
+                else:
+                    self.window.fill(LIGHT_BLUE)
 
             elif menu == "AI":
                 # Getting the list of keys the user has pressed
@@ -165,11 +182,9 @@ class PongGame:
                     menu = "Modes_Menu"
 
             pygame.display.update()
-
         pygame.quit()
 
 if __name__ == "__main__":
-
     # Loading the Configuration
     local_dir = os.path.dirname(__file__)
     configuration_path = os.path.join(local_dir, "config.txt")
