@@ -3,7 +3,7 @@ pygame.init()
 import os
 import neat
 import pickle
-from Pong import (SCREEN_PADDING, SCREEN_WIDTH, SCREEN_HEIGHT, Game)
+from Pong import (SCREEN_PADDING, SCREEN_WIDTH, SCREEN_HEIGHT, Game, MAX_SCORE)
 from Pong.Constants import (BLACK, WHITE, GREY, LIGHT_BLUE)
 from Widgets import (Button, Image)
 
@@ -62,6 +62,9 @@ class PongGame:
         
         CONTINUE_IMG = pygame.image.load('./Assets/Continue.png').convert_alpha()
         Continue_Btn = Button(CONTINUE_IMG, 220, 240, 0.3)
+        
+        RESET_IMG = pygame.image.load('./Assets/Reset.png').convert_alpha()
+        Reset_Btn = Button(RESET_IMG, 220, 240, 0.2)
 
         PVP_IMG = pygame.image.load('./Assets/PVP.png').convert_alpha()
         PVP_Btn = Button(PVP_IMG, 160, 190, 0.22)
@@ -74,6 +77,9 @@ class PongGame:
 
         # Flag to Control if the game is paused
         paused = False
+
+        # Flag to Control if the game is Over
+        game_over = False
 
         # Creating a Clock to Control the Ball's Movement
         # by later limiting the number of frames to render
@@ -108,11 +114,12 @@ class PongGame:
                 # Reset the Game every time we switch Game Mode
                 self.game.reset()
 
-                # Making sure the game is never set to paused in the Games Mode Menu
+                # Making sure the game is never set to paused nor it is over in the Games Mode Menu
                 paused = False
+                game_over = False
 
                 # Customizing the Section of the App
-                self.window.fill(GREY)  
+                self.window.fill(GREY)
                 self.write(font='Arial', text=" Game Modes ", size=40, color=GREY, bg_color=WHITE, bold=True, pos=(250, 60))
                 self.write(font='Arial', text=" PVP ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(185, 330))
                 self.write(font='Arial', text=" AI → NEAT ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(422, 330))
@@ -129,40 +136,57 @@ class PongGame:
                 # Getting the list of keys the user has pressed
                 keys = pygame.key.get_pressed()
                 
-                if not paused:
-                    # Setting the Paddle's Movement Mechanics
-                    if keys[pygame.K_w]: # Left Paddle Up
-                        self.game.move_paddle(left=True, up=True)
-                    if keys[pygame.K_s]: # Left Paddle Down
-                        self.game.move_paddle(left=True, up=False)
-                    if keys[pygame.K_UP]: # Right Paddle Up
-                        self.game.move_paddle(left=False, up=True)
-                    if keys[pygame.K_DOWN]: # Right Paddle Down
-                        self.game.move_paddle(left=False, up=False)
+                if not game_over:
+                    if not paused:
+                        # Checking for a Winner
+                        if self.game.game_info.left_score == MAX_SCORE or self.game.game_info.right_score == MAX_SCORE:
+                            game_over = True
 
-                    # Bind the R key to easily restart the Game
-                    if keys[pygame.K_r]:
-                        self.game.reset()
-                
-                    self.game.loop()
-                    self.game.draw(self.window, True, False)
+                        # Setting the Paddle's Movement Mechanics
+                        if keys[pygame.K_w]: # Left Paddle Up
+                            self.game.move_paddle(left=True, up=True)
+                        if keys[pygame.K_s]: # Left Paddle Down
+                            self.game.move_paddle(left=True, up=False)
+                        if keys[pygame.K_UP]: # Right Paddle Up
+                            self.game.move_paddle(left=False, up=True)
+                        if keys[pygame.K_DOWN]: # Right Paddle Down
+                            self.game.move_paddle(left=False, up=False)
 
-                    # Return to Modes Menu [Using the Back_Btn]
-                    if (Back_Btn.Action(self.window)):
-                        menu = "Modes_Menu"
+                        # Bind the R key to easily restart the Game
+                        if keys[pygame.K_r]:
+                            self.game.reset()
+                    
+                        self.game.loop()
+                        self.game.draw(self.window, True, False)
+
+                        # Return to Modes Menu [Using the Back_Btn]
+                        if (Back_Btn.Action(self.window)):
+                            menu = "Modes_Menu"
+                    
+                    # Pause Sub-Menu
+                    else:
+                        pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
+                        game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
+                        self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+
+                        if (Continue_Btn.Action(self.window)):
+                            paused = False
+
+                        if (Exit_Btn.Action(self.window)):
+                            run = False
                 
-                # Pause Sub-Menu
+                # Game Over Sub-Menu
                 else:
                     pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
-                    game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
+                    game_paused_text = self.ARCADE_FONT.render(f"GAME OVER", 1, WHITE)
                     self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
 
-                    if (Continue_Btn.Action(self.window)):
-                        paused = False
-
+                    if (Reset_Btn.Action(self.window)):
+                        self.game.reset()
+                        game_over = False
+                    
                     if (Exit_Btn.Action(self.window)):
                         run = False
-
 
             elif menu == "AI":
                 # Getting the list of keys the user has pressed
