@@ -52,12 +52,13 @@ class Game:
         left_score_text = self.SCORE_FONT.render(f"{self.game_info.left_score}", 1, self.left_paddle.COLOR)
         right_score_text = self.SCORE_FONT.render(f"{self.game_info.right_score}", 1, self.right_paddle.COLOR)
         
-        Window.blit(left_score_text, (SCREEN_WIDTH // 4 - left_score_text.get_width() // 2, 20))
-        Window.blit(right_score_text, (SCREEN_WIDTH * (3/4) - right_score_text.get_width() // 2, 20))
+        Window.blit(left_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) // 4 - left_score_text.get_width() // 2 + SCREEN_PADDING + 70, -7))
+        Window.blit(right_score_text, ((SCREEN_WIDTH - 2*SCREEN_PADDING) * (3/4) - right_score_text.get_width() // 2 + SCREEN_PADDING - 70, -7))
+        pygame.draw.rect(Window, WHITE, (SCREEN_WIDTH // 2 - 25, SCREEN_PADDING // 2 - 20, 50, 10), 0, 8)
 
     def _draw_hits(self, Window:pygame.Surface) -> None:
         hits_text = self.SCORE_FONT.render(f"{self.game_info.left_hits + self.game_info.right_hits}", 1, RED)
-        Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, 10))
+        Window.blit(hits_text, (SCREEN_WIDTH // 2 - hits_text.get_width() // 2, -7))
 
     def _draw_divider(self, Window:pygame.Surface) -> None:
         for i in range(SCREEN_PADDING + 10, SCREEN_HEIGHT - SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 20):
