@@ -3,11 +3,13 @@ pygame.init()
 import os
 import neat
 import pickle
-from Pong import (SCREEN_WIDTH, SCREEN_HEIGHT, Game)
+from Pong import (SCREEN_PADDING, SCREEN_WIDTH, SCREEN_HEIGHT, Game)
 from Pong.Constants import (BLACK, WHITE, GREY, LIGHT_BLUE)
 from Widgets import (Button, Image)
 
 class PongGame:
+    ARCADE_FONT = pygame.font.Font("./Assets/Fonts/ARCADECLASSIC.TTF", 50)
+
     def __init__(self, Config:neat.Config, Best_Genome:neat.DefaultGenome) -> None:
         # Creating a Window/Screen for the Application
         self.window = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -54,6 +56,12 @@ class PongGame:
 
         BACK_IMG = pygame.image.load('./Assets/Back.png').convert_alpha()
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
+        
+        EXIT_IMG = pygame.image.load('./Assets/Exit.png').convert_alpha()
+        Exit_Btn = Button(EXIT_IMG, 450, 220, 0.3)
+        
+        CONTINUE_IMG = pygame.image.load('./Assets/Continue.png').convert_alpha()
+        Continue_Btn = Button(CONTINUE_IMG, 220, 240, 0.3)
 
         PVP_IMG = pygame.image.load('./Assets/PVP.png').convert_alpha()
         PVP_Btn = Button(PVP_IMG, 160, 190, 0.22)
@@ -145,7 +153,16 @@ class PongGame:
                 
                 # Pause Sub-Menu
                 else:
-                    self.window.fill(LIGHT_BLUE)
+                    pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
+                    game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
+                    self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+
+                    if (Continue_Btn.Action(self.window)):
+                        paused = False
+
+                    if (Exit_Btn.Action(self.window)):
+                        run = False
+
 
             elif menu == "AI":
                 # Getting the list of keys the user has pressed
