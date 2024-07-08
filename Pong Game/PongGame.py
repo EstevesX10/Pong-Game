@@ -174,7 +174,7 @@ class PongGame:
 
                         if (Exit_Btn.Action(self.window)):
                             run = False
-                
+
                 # Game Over Sub-Menu
                 else:
                     pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
@@ -192,36 +192,67 @@ class PongGame:
                 # Getting the list of keys the user has pressed
                 keys = pygame.key.get_pressed()
 
-                # Setting the Paddle's Movement Mechanics
-                if keys[pygame.K_w] or keys[pygame.K_UP]: # Left Paddle Up
-                    self.game.move_paddle(left=True, up=True)
-                if keys[pygame.K_s] or keys[pygame.K_DOWN]: # Left Paddle Down
-                    self.game.move_paddle(left=True, up=False)
+                if not game_over:
+                    if not paused:
+                        # Checking for a Winner
+                        if self.game.game_info.left_score == MAX_SCORE or self.game.game_info.right_score == MAX_SCORE:
+                            game_over = True
+
+                        # Setting the Paddle's Movement Mechanics
+                        if keys[pygame.K_w] or keys[pygame.K_UP]: # Left Paddle Up
+                            self.game.move_paddle(left=True, up=True)
+                        if keys[pygame.K_s] or keys[pygame.K_DOWN]: # Left Paddle Down
+                            self.game.move_paddle(left=True, up=False)
+                        
+                        # Bind the R key to easily restart the Game
+                        if keys[pygame.K_r]:
+                            self.game.reset()
+                        
+                        # Feed the Right Paddle's Network with the y pos of the padde, the y pos of the ball and the distance between the paddle and the ball
+                        Output_Network = self.network.activate((self.right_paddle.y, self.ball.y, abs(self.right_paddle.x - self.ball.x)))
+                        # Save the best decision threshold [the one that allowed to obtain the greater output]
+                        Decision = Output_Network.index(max(Output_Network))
+
+                        # Discriminating the Right Paddle's Movement based on the Network's Output
+                        if Decision == 0: # Stay Still
+                            pass
+                        elif Decision == 1: # Move Up
+                            self.game.move_paddle(left=False, up=True)
+                        else: # Move Down
+                            self.game.move_paddle(left=False, up=False)
+
+                        self.game.loop()
+                        self.game.draw(self.window, True, False)
+
+                        # Return to Modes Menu [Using the Back_Btn]
+                        if (Back_Btn.Action(self.window)):
+                            menu = "Modes_Menu"
+
+                    # Pause Sub-Menu
+                    else:
+                        pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
+                        game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
+                        self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+
+                        if (Continue_Btn.Action(self.window)):
+                            paused = False
+
+                        if (Exit_Btn.Action(self.window)):
+                            run = False
                 
-                # Bind the R key to easily restart the Game
-                if keys[pygame.K_r]:
-                    self.game.reset()
-                
-                # Feed the Right Paddle's Network with the y pos of the padde, the y pos of the ball and the distance between the paddle and the ball
-                Output_Network = self.network.activate((self.right_paddle.y, self.ball.y, abs(self.right_paddle.x - self.ball.x)))
-                # Save the best decision threshold [the one that allowed to obtain the greater output]
-                Decision = Output_Network.index(max(Output_Network))
+                # Game Over Sub-Menu
+                else:
+                    pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
+                    game_paused_text = self.ARCADE_FONT.render(f"GAME OVER", 1, WHITE)
+                    self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
 
-                # Discriminating the Right Paddle's Movement based on the Network's Output
-                if Decision == 0: # Stay Still
-                    pass
-                elif Decision == 1: # Move Up
-                    self.game.move_paddle(left=False, up=True)
-                else: # Move Down
-                    self.game.move_paddle(left=False, up=False)
-
-                self.game.loop()
-                self.game.draw(self.window, True, False)
-
-                # Return to Modes Menu [Using the Back_Btn]
-                if (Back_Btn.Action(self.window)):
-                    menu = "Modes_Menu"
-
+                    if (Reset_Btn.Action(self.window)):
+                        self.game.reset()
+                        game_over = False
+                    
+                    if (Exit_Btn.Action(self.window)):
+                        run = False
+            
             pygame.display.update()
         pygame.quit()
 
