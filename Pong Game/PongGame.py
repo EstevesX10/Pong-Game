@@ -4,7 +4,7 @@ import os
 import neat
 import pickle
 from Pong import (SCREEN_PADDING, SCREEN_WIDTH, SCREEN_HEIGHT, Game, MAX_SCORE)
-from Pong.Constants import (BLACK, WHITE, GREY, LIGHT_BLUE)
+from Pong.Constants import (BLACK, WHITE, GREY, LIGHT_BLUE, DARK_RED)
 from Widgets import (Button, Image)
 
 class PongGame:
@@ -37,6 +37,44 @@ class PongGame:
         frase = letra.render(text, 1, color, bg_color)
         self.window.blit(frase, pos)
 
+    def draw_pause_menu(self):
+        # Removing unnecessary elements [Eg: Score and Back Button]
+        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_WIDTH, SCREEN_PADDING // 2), 0, 10)
+        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_PADDING - 30, SCREEN_PADDING), 0, 10)
+
+        # Draw the Pause Sub-Menu
+        pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
+        game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
+        self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+
+        # Getting the Writting of Current Score for each player
+        left_score_text = self.ARCADE_FONT.render(f"{self.game.game_info.left_score}", 1, self.left_paddle.COLOR)
+        right_score_text = self.ARCADE_FONT.render(f"{self.game.game_info.right_score}", 1, self.right_paddle.COLOR)                        
+        score_text_length = left_score_text.get_width() + right_score_text.get_width() + SCREEN_PADDING
+        
+        # Creating a Box for the Scores
+        pygame.draw.rect(self.window, GREY, (SCREEN_WIDTH // 2 - score_text_length // 2 - 5, 2.4*SCREEN_PADDING - 5, score_text_length + 10, SCREEN_PADDING // 2 + 10), 0, 10)
+        pygame.draw.rect(self.window, WHITE, (SCREEN_WIDTH // 2 - score_text_length // 2, 2.4*SCREEN_PADDING, score_text_length, SCREEN_PADDING // 2), 0, 10)
+        
+        # Making a Dash to Separate the Scores
+        dash_length = 20
+        dash_height = 8
+        pygame.draw.rect(self.window, GREY, (SCREEN_WIDTH // 2 - dash_length // 2, 2.7*SCREEN_PADDING - dash_height, dash_length, dash_height), 0, 8)
+
+        # Putting the Scores into the Previously Created Box
+        self.window.blit(left_score_text, (SCREEN_WIDTH // 2 - score_text_length // 3, 1.89*SCREEN_PADDING + left_score_text.get_height()))
+        self.window.blit(right_score_text, (SCREEN_WIDTH // 2 + score_text_length // 6, 1.89*SCREEN_PADDING + right_score_text.get_height()))
+
+    def draw_game_over_menu(self):
+        # Removing unnecessary elements [Eg: Score and Back Button]
+        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_WIDTH, SCREEN_PADDING // 2), 0, 10)
+        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_PADDING - 30, SCREEN_PADDING), 0, 10)
+
+        # Draw the Game Over Sub-Menu Interface
+        pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
+        game_paused_text = self.ARCADE_FONT.render(f"GAME OVER", 1, WHITE)
+        self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+
     def run(self) -> None:
         # Customizing the Window
         pygame.display.set_caption("Pong Game")
@@ -58,13 +96,14 @@ class PongGame:
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
         
         EXIT_IMG = pygame.image.load('./Assets/Exit.png').convert_alpha()
-        Exit_Btn = Button(EXIT_IMG, 450, 220, 0.3)
+        Exit_Btn_Pause_Game = Button(EXIT_IMG, 450, 310, 0.2)
+        Exit_Btn_Game_Over = Button(EXIT_IMG, 450, 320, 0.2)
         
         CONTINUE_IMG = pygame.image.load('./Assets/Continue.png').convert_alpha()
-        Continue_Btn = Button(CONTINUE_IMG, 220, 240, 0.3)
+        Continue_Btn = Button(CONTINUE_IMG, 250, 320, 0.20)
         
         RESET_IMG = pygame.image.load('./Assets/Reset.png').convert_alpha()
-        Reset_Btn = Button(RESET_IMG, 220, 240, 0.2)
+        Reset_Btn = Button(RESET_IMG, 220, 340, 0.13)
 
         PVP_IMG = pygame.image.load('./Assets/PVP.png').convert_alpha()
         PVP_Btn = Button(PVP_IMG, 160, 190, 0.22)
@@ -137,11 +176,11 @@ class PongGame:
                 keys = pygame.key.get_pressed()
 
                 if not game_over:
-                    if not paused:
-                        # Checking for a Winner
-                        if self.game.game_info.left_score == MAX_SCORE or self.game.game_info.right_score == MAX_SCORE:
-                            game_over = True
-
+                    # Checking for a Winner
+                    if self.game.game_info.left_score == MAX_SCORE or self.game.game_info.right_score == MAX_SCORE:
+                        game_over = True
+                    
+                    elif not paused:    
                         # Setting the Paddle's Movement Mechanics
                         if keys[pygame.K_w]: # Left Paddle Up
                             self.game.move_paddle(left=True, up=True)
@@ -166,33 +205,21 @@ class PongGame:
                     
                     # Pause Sub-Menu
                     else:
-                        # Removing unnecessary elements [Eg: Score and Back Button]
-                        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_WIDTH, SCREEN_PADDING // 2), 0, 10)
-                        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_PADDING - 30, SCREEN_PADDING), 0, 10)
-
-                        # Draw the Pause Sub-Menu
-                        pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
-                        game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
-                        self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+                        # Draw Pause Sub-Menu Elements
+                        self.draw_pause_menu()
 
                         # Check if the Game is to be Continued
                         if (Continue_Btn.Action(self.window)):
                             paused = False
 
                         # Quit the Application
-                        if (Exit_Btn.Action(self.window)):
+                        if (Exit_Btn_Pause_Game.Action(self.window)):
                             run = False
 
                 # Game Over Sub-Menu
                 else:
-                    # Removing unnecessary elements [Eg: Score and Back Button]
-                    pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_WIDTH, SCREEN_PADDING // 2), 0, 10)
-                    pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_PADDING - 30, SCREEN_PADDING), 0, 10)
-
-                    # Draw the Game Over Sub-Menu Interface
-                    pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
-                    game_paused_text = self.ARCADE_FONT.render(f"GAME OVER", 1, WHITE)
-                    self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+                    # Draw the Game Over Sub-Menu Elements
+                    self.draw_game_over_menu()
 
                     # Reset the Game (Start Again)
                     if (Reset_Btn.Action(self.window)):
@@ -200,7 +227,7 @@ class PongGame:
                         game_over = False
                     
                     # Quit the Application
-                    if (Exit_Btn.Action(self.window)):
+                    if (Exit_Btn_Game_Over.Action(self.window)):
                         run = False
 
             elif menu == "AI":
@@ -208,11 +235,11 @@ class PongGame:
                 keys = pygame.key.get_pressed()
 
                 if not game_over:
-                    if not paused:
-                        # Checking for a Winner
-                        if self.game.game_info.left_score == MAX_SCORE or self.game.game_info.right_score == MAX_SCORE:
-                            game_over = True
-
+                    # Checking for a Winner
+                    if self.game.game_info.left_score == MAX_SCORE or self.game.game_info.right_score == MAX_SCORE:
+                        game_over = True
+                    
+                    elif not paused:
                         # Setting the Paddle's Movement Mechanics
                         if keys[pygame.K_w] or keys[pygame.K_UP]: # Left Paddle Up
                             self.game.move_paddle(left=True, up=True)
@@ -245,41 +272,29 @@ class PongGame:
 
                     # Pause Sub-Menu
                     else:
-                        # Removing unnecessary elements [Eg: Score and Back Button]
-                        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_WIDTH, SCREEN_PADDING // 2), 0, 10)
-                        pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_PADDING - 30, SCREEN_PADDING), 0, 10)
-
-                        # Draw the Pause Sub-Menu
-                        pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
-                        game_paused_text = self.ARCADE_FONT.render(f"GAME PAUSED", 1, WHITE)
-                        self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
+                        # Draw Pause Sub-Menu Elements
+                        self.draw_pause_menu()
 
                         # Check if the Game is to be Continued
                         if (Continue_Btn.Action(self.window)):
                             paused = False
 
                         # Quit Application
-                        if (Exit_Btn.Action(self.window)):
+                        if (Exit_Btn_Pause_Game.Action(self.window)):
                             run = False
                 
                 # Game Over Sub-Menu
                 else:
-                    # Removing unnecessary elements [Eg: Score and Back Button]
-                    pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_WIDTH, SCREEN_PADDING // 2), 0, 10)
-                    pygame.draw.rect(self.window, GREY, (0, 0, SCREEN_PADDING - 30, SCREEN_PADDING), 0, 10)
-
-                    # Draw the Game Over Sub-Menu Interface
-                    pygame.draw.rect(self.window, LIGHT_BLUE, (SCREEN_PADDING, SCREEN_PADDING, (SCREEN_WIDTH - 2*SCREEN_PADDING), (SCREEN_HEIGHT - 2*SCREEN_PADDING)), 0, 10)
-                    game_paused_text = self.ARCADE_FONT.render(f"GAME OVER", 1, WHITE)
-                    self.window.blit(game_paused_text, (SCREEN_WIDTH // 2 - game_paused_text.get_width() // 2, SCREEN_PADDING + game_paused_text.get_height()))
-
+                    # Draw the Game Over Sub-Menu Elements
+                    self.draw_game_over_menu()
+                    
                     # Reset Game (Start Again)
                     if (Reset_Btn.Action(self.window)):
                         self.game.reset()
                         game_over = False
                     
                     # Quit Application
-                    if (Exit_Btn.Action(self.window)):
+                    if (Exit_Btn_Game_Over.Action(self.window)):
                         run = False
             
             pygame.display.update()
