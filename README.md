@@ -36,6 +36,27 @@
 
 > ADD PROJECT OVERVIEW
 
+## Project Execution
+
+This Project is mainly divided into 2 seperate parts:
+
+1. Trainning of the NEAT Algorithm [Genetic Algorithm]
+2. Main Application that allows the User to play Pong against the trained AI
+
+### Train AI
+
+In order to properly train the NEAT Algorithm, please run the following command on your terminal :
+
+    python Train_AI.py
+
+> Keep in mind that it is possible to modify the configuration file in order to change the way the Algorithm trains and ultimately performs against other agents / players.
+
+### Run the Application
+
+Finally, to run the main application make sure to be inside the correct directory and therefore execute the following command:
+
+    python Pong_Game.py
+
 <div align="right">
 <sub>
 <!-- <sup></sup> -->
