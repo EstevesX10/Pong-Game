@@ -118,11 +118,11 @@ class PongGame:
 
         # Creating Wallpapers
         BG_IMG = pygame.image.load('./Assets/Pong_Game_BG.jpg').convert_alpha()
-        Main_Menu = Image(BG_IMG, -160, 65, .4)
+        Main_Menu = Image(BG_IMG, -160, 65, .45)
 
         # Creating Buttons
         START_IMG = pygame.image.load('./Assets/Start.png').convert_alpha()
-        Start_Btn = Button(START_IMG, 420, 190, 0.4)
+        Start_Btn = Button(START_IMG, 505, 213, 0.4)
 
         BACK_IMG = pygame.image.load('./Assets/Back.png').convert_alpha()
         Back_Btn = Button(BACK_IMG, 20, 20, 0.1)
@@ -138,10 +138,10 @@ class PongGame:
         Reset_Btn = Button(RESET_IMG, 180, 345, 0.13)
 
         PVP_IMG = pygame.image.load('./Assets/PVP.png').convert_alpha()
-        PVP_Btn = Button(PVP_IMG, 160, 190, 0.22)
+        PVP_Btn = Button(PVP_IMG, 190, 200, 0.3)
 
         AI_IMG = pygame.image.load('./Assets/AI.png').convert_alpha()
-        AI_Btn = Button(AI_IMG, 440, 190, 0.22)
+        AI_Btn = Button(AI_IMG, 470, 200, 0.3)
 
         # Flag to control the flow of the game
         run = True
@@ -191,9 +191,9 @@ class PongGame:
 
                 # Customizing the Section of the App
                 self.window.fill(GREY)
-                self.write(font='Arial', text=" Game Modes ", size=40, color=GREY, bg_color=WHITE, bold=True, pos=(250, 60))
-                self.write(font='Arial', text=" PVP ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(185, 330))
-                self.write(font='Arial', text=" AI → NEAT ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(422, 330))
+                self.write(font='Arial', text=" Game Modes ", size=50, color=GREY, bg_color=WHITE, bold=True, pos=(265, 60))
+                self.write(font='Arial', text=" PVP ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(235, 380))
+                self.write(font='Arial', text=" NEAT AI ", size=30, color=GREY, bg_color=WHITE, bold=True, pos=(490, 380))
 
                 # Use Buttons to manage the flow of the application
                 if (Back_Btn.Action(self.window)):
