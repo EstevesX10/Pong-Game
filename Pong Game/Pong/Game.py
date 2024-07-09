@@ -3,7 +3,7 @@ from .Ball import (Ball)
 import pygame
 from Widgets import (Image)
 from .Constants import (SCREEN_PADDING, SCREEN_WIDTH, SCREEN_HEIGHT,
-                        WHITE, BLACK, LIGHT_RED, RED, DARK_RED, LIGHT_BLUE, PALE_BLUE, GREY, SILVER)
+                        WHITE, GREY, RED, DARK_RED, SKY_BLUE, LIGHT_BLUE, BLUE)
 
 
 class GameInformation:
@@ -41,8 +41,8 @@ class Game:
 
     def __init__(self) -> None:
         # Referencing the Game Elements
-        self.left_paddle = Paddle(SCREEN_PADDING + 10, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, LIGHT_BLUE)
-        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - SCREEN_PADDING - Paddle.WIDTH, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, LIGHT_RED)
+        self.left_paddle = Paddle(SCREEN_PADDING + 10, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, BLUE)
+        self.right_paddle = Paddle(SCREEN_WIDTH - 10 - SCREEN_PADDING - Paddle.WIDTH, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 - Paddle.HEIGHT // 2 + SCREEN_PADDING, RED)
         self.ball = Ball((SCREEN_WIDTH - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING, (SCREEN_HEIGHT - 2*SCREEN_PADDING) // 2 + SCREEN_PADDING, WHITE)
 
         # Creating an instance of Game Information to keep track of the scores and hits per player
@@ -109,7 +109,7 @@ class Game:
         # Drawing the Board
         pygame.draw.rect(Window, GREY , (SCREEN_PADDING - 13, SCREEN_PADDING - 15, SCREEN_WIDTH - 2*SCREEN_PADDING + 26, SCREEN_HEIGHT - 2*SCREEN_PADDING + 35), 0, 10)
         pygame.draw.rect(Window, DARK_RED, (SCREEN_PADDING - 10, SCREEN_PADDING - 10, SCREEN_WIDTH - 2*SCREEN_PADDING + 20, SCREEN_HEIGHT - 2*SCREEN_PADDING + 20), 0, 16)
-        pygame.draw.rect(Window, PALE_BLUE, (SCREEN_PADDING, SCREEN_PADDING, SCREEN_WIDTH - 2*SCREEN_PADDING, SCREEN_HEIGHT - 2*SCREEN_PADDING), 0, 10)
+        pygame.draw.rect(Window, SKY_BLUE, (SCREEN_PADDING, SCREEN_PADDING, SCREEN_WIDTH - 2*SCREEN_PADDING, SCREEN_HEIGHT - 2*SCREEN_PADDING), 0, 10)
         self._draw_divider(Window)
 
         if draw_score:
