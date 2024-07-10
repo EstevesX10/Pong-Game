@@ -118,4 +118,4 @@ if __name__ == "__main__":
     configuration = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, configuration_path)
     
     # Train the NEAT Algorithm based on the loaded configuration
-    Run_NEAT(configuration, save_model=False)
+    Run_NEAT(configuration, save_model=True)
