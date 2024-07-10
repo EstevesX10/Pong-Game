@@ -1,7 +1,7 @@
 <p>
 <div align="center">
 
-# Pong Game [NEAT Algorithm]
+# Pong Game
 </div>
 </p>
 
@@ -43,7 +43,7 @@ This project aims to faithfully **replicate** the classic Pong game, allowing us
 ### Game Modes
 
 - **Two-Player Mode:** Challenge a **friend on the same device**, each controlling a paddle on opposite sides of the screen.
-- **Single-Player Mode:** Test your skills against a **computer-controlled opponent**.
+- **Single-Player Mode:** Test your skills against a **computer-controlled opponent** [`NEAT Algorithm`].
 
 ### Development Goals
 
