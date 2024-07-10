@@ -72,7 +72,9 @@ Finally, to ``run the main application`` make sure to be inside the correct dire
 
     python Pong_Game.py
 
-https://github.com/EstevesX10/Pong-Game/assets/103591462/acdbc86f-f7c7-4f94-b43a-673714e62534
+<div align = "center">
+ <video src= "https://github.com/EstevesX10/Pong-Game/assets/103591462/acdbc86f-f7c7-4f94-b43a-673714e62534" />
+</div>
 
 <div align="right">
 <sub>
