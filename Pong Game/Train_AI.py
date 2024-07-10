@@ -3,7 +3,7 @@ pygame.init()
 import os
 import neat
 import pickle
-from Pong import (SCREEN_WIDTH, SCREEN_HEIGHT, Game)
+from Pong import (SCREEN_WIDTH, SCREEN_HEIGHT, GameInformation, Game)
 
 class Train_AI_Pong_Game:
     def __init__(self, Window:pygame.Surface) -> None:
@@ -65,7 +65,7 @@ class Train_AI_Pong_Game:
                 self.Calculate_Fitness_Score(Genome_1, Genome_2, Game_Info)
                 break
 
-    def Calculate_Fitness_Score(self, Genome_1:neat.DefaultGenome, Genome_2:neat.DefaultGenome, Game_Info:Game) -> None:
+    def Calculate_Fitness_Score(self, Genome_1:neat.DefaultGenome, Genome_2:neat.DefaultGenome, Game_Info:GameInformation) -> None:
         Genome_1.fitness += Game_Info.left_hits
         Genome_2.fitness += Game_Info.right_hits
 
