@@ -34,11 +34,11 @@
 
 ## Project Overview
 
-Pong is a table tennis-themed arcade sports video game, featuring simple two-dimensional graphics, originally developed by Atari. It was one of the earliest and most iconic arcade video games, laying the foundation for the gaming industry.
+Pong is a **table tennis-themed arcade sports video game**, featuring simple two-dimensional graphics, originally developed by `Atari`. It was one of the earliest and most **iconic** arcade video games, laying the foundation for the gaming industry.
 
 ### Objective
 
-This project aims to faithfully replicate the classic Pong game, allowing users to enjoy the nostalgic experience of playing against another player or a trained AI opponent. The goal is to capture the simplicity and excitement of the original game while incorporating modern coding practices and enhancements.
+This project aims to faithfully **replicate** the classic Pong game, allowing users to enjoy the nostalgic experience of playing against ``another player`` or a ``trained AI opponent``. The goal is to capture the simplicity and excitement of the original game while incorporating modern coding practices and enhancements.
 
 ### Game Modes
 
@@ -56,7 +56,7 @@ This project aims to faithfully replicate the classic Pong game, allowing users 
 This Project is mainly divided into 2 seperate parts:
 
 1. Trainning of the NEAT Algorithm [Genetic Algorithm]
-2. Main Application that allows the User to play against the trained AI
+2. Main Application which allows the User to adventure himself inside this Arcade Game
 
 ### Train AI
 
