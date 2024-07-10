@@ -78,10 +78,12 @@ Ultimately here's a `short video` on how the **Application** works and what you 
  <video src= "https://github.com/EstevesX10/Pong-Game/assets/103591462/baf9514b-24f0-450b-a09b-f2d33f9b533f" />
 </div>
 
+<br/>
+
 <div align="right">
 <sub>
 <!-- <sup></sup> -->
 
-README.md by Gonçalo Esteves
+`README.md by Gonçalo Esteves`
 </sub>
 </div>
