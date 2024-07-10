@@ -38,12 +38,12 @@ Pong is a **table tennis-themed arcade sports video game**, featuring simple two
 
 ### Objective
 
-This project aims to faithfully **replicate** the classic Pong game, allowing users to enjoy the nostalgic experience of playing against ``another player`` or a ``trained AI opponent``. The goal is to capture the simplicity and excitement of the original game while incorporating modern coding practices and enhancements.
+This project aims to faithfully **replicate** the classic Pong game, allowing users to enjoy the nostalgic experience of playing against ``another player`` or a ``trained AI opponent``. The goal is to capture the simplicity and excitement of the **original game** while incorporating modern coding practices and enhancements.
 
 ### Game Modes
 
-- **Two-Player Mode:** Challenge a friend on the same device, each controlling a paddle on opposite sides of the screen.
-- **Single-Player Mode:** Test your skills against a computer-controlled opponent.
+- **Two-Player Mode:** Challenge a **friend on the same device**, each controlling a paddle on opposite sides of the screen.
+- **Single-Player Mode:** Test your skills against a **computer-controlled opponent**.
 
 ### Development Goals
 
@@ -53,14 +53,14 @@ This project aims to faithfully **replicate** the classic Pong game, allowing us
 
 ## Project Execution
 
-This Project is mainly divided into 2 seperate parts:
+This Project is mainly divided into **2 seperate parts**:
 
-1. Trainning of the NEAT Algorithm [Genetic Algorithm]
-2. Main Application which allows the User to adventure himself inside this Arcade Game
+1. Trainning of the **NEAT Algorithm** [Genetic Algorithm]
+2. **Main Application** which allows the User to adventure himself inside this Arcade Game
 
 ### Train AI
 
-In order to properly train the NEAT Algorithm, please run the following command on your terminal :
+In order to properly ``train the NEAT Algorithm``, please run the following command on your terminal :
 
     python Train_AI.py
 
@@ -68,7 +68,7 @@ In order to properly train the NEAT Algorithm, please run the following command 
 
 ### Run the Application
 
-Finally, to run the main application make sure to be inside the correct directory and therefore execute the following command:
+Finally, to ``run the main application`` make sure to be inside the correct directory and therefore execute the following command:
 
     python Pong_Game.py
 
