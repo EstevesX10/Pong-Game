@@ -34,7 +34,7 @@
 
 ## Project Overview
 
-Pong is a **table tennis-themed arcade sports video game**, featuring simple two-dimensional graphics, originally developed by `Atari`. It was one of the earliest and most **iconic** arcade video games, laying the foundation for the gaming industry.
+Pong is a **table tennis-themed arcade sports video game**, featuring simple two-dimensional graphics, originally developed by `Atari`. It was one of the earliest and most **iconic arcade video games**, laying the foundation for the gaming industry.
 
 ### Objective
 
