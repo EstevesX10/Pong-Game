@@ -38,7 +38,7 @@ Pong is a **table tennis-themed arcade sports video game**, featuring simple two
 
 ### Objective
 
-This project aims to faithfully **replicate** the classic Pong game, allowing users to enjoy the nostalgic experience of playing against ``another player`` or a ``trained AI opponent``. The goal is to capture the simplicity and excitement of the **original game** while incorporating modern coding practices and enhancements.
+This project aims to faithfully **replicate** the classic Pong game, allowing users to enjoy the nostalgic experience of playing against `another player` or a `trained AI opponent`. The goal is to capture the simplicity and excitement of the **original game** while incorporating modern coding practices and enhancements.
 
 ### Game Modes
 
@@ -60,7 +60,7 @@ This Project is mainly divided into **2 seperate parts**:
 
 ### Train AI
 
-In order to properly ``train the NEAT Algorithm``, please run the following command on your terminal :
+In order to properly `train the NEAT Algorithm`, please run the following command on your terminal :
 
     python Train_AI.py
 
@@ -68,9 +68,11 @@ In order to properly ``train the NEAT Algorithm``, please run the following comm
 
 ### Run the Application
 
-Finally, to ``run the main application`` make sure to be inside the correct directory and therefore execute the following command:
+Finally, to `run the main application` make sure to be inside the correct directory and therefore execute the following command:
 
     python Pong_Game.py
+
+Ultimately here's a `short video` on how the **Application** works and what you might find inside it:
 
 <div align = "center">
  <video src= "https://github.com/EstevesX10/Pong-Game/assets/103591462/baf9514b-24f0-450b-a09b-f2d33f9b533f" />
@@ -80,6 +82,6 @@ Finally, to ``run the main application`` make sure to be inside the correct dire
 <sub>
 <!-- <sup></sup> -->
 
-`README.md by Gonçalo Esteves`
+README.md by Gonçalo Esteves
 </sub>
 </div>
