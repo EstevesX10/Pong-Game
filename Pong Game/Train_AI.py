@@ -66,6 +66,7 @@ class Train_AI_Pong_Game:
                 break
 
     def Calculate_Fitness_Score(self, Genome_1:neat.DefaultGenome, Genome_2:neat.DefaultGenome, Game_Info:GameInformation) -> None:
+        # Calculates / Updates the Fitness Score of both given Genomes
         Genome_1.fitness += Game_Info.left_hits
         Genome_2.fitness += Game_Info.right_hits
 
@@ -111,7 +112,10 @@ def Run_NEAT(config:neat.Config, save_model:bool=True) -> None:
             pickle.dump(best_neural_network, f)
 
 if __name__ == "__main__":
+    # Loading the Configuration
     local_dir = os.path.dirname(__file__)
     configuration_path = os.path.join(local_dir, "config.txt")
     configuration = neat.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation, configuration_path)
+    
+    # Train the NEAT Algorithm based on the loaded configuration
     Run_NEAT(configuration, save_model=False)
