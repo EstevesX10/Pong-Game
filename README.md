@@ -64,7 +64,7 @@ In order to properly ``train the NEAT Algorithm``, please run the following comm
 
     python Train_AI.py
 
-> Keep in mind that it is possible to modify the configuration file in order to change the way the Algorithm trains and ultimately performs against other agents / players.
+> Keep in mind that it is possible to **modify the configuration file** in order to change the way the Algorithm trains and ultimately performs against other agents / players.
 
 ### Run the Application
 
