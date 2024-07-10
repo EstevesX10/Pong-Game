@@ -34,14 +34,29 @@
 
 ## Project Overview
 
-> ADD PROJECT OVERVIEW
+Pong is a table tennis-themed arcade sports video game, featuring simple two-dimensional graphics, originally developed by Atari. It was one of the earliest and most iconic arcade video games, laying the foundation for the gaming industry.
+
+### Objective
+
+This project aims to faithfully replicate the classic Pong game, allowing users to enjoy the nostalgic experience of playing against another player or a trained AI opponent. The goal is to capture the simplicity and excitement of the original game while incorporating modern coding practices and enhancements.
+
+### Game Modes
+
+- **Two-Player Mode:** Challenge a friend on the same device, each controlling a paddle on opposite sides of the screen.
+- **Single-Player Mode:** Test your skills against a computer-controlled opponent.
+
+### Development Goals
+
+- **Learning and Applying Pygame:** This project serves as a practical exercise in using the Pygame library to create a functional game.
+- **Implementing Core Game Mechanics:** Focus on developing and fine-tuning the physics and controls to ensure an enjoyable gameplay experience.
+- **Creating a Nostalgic Experience:** Recreate the charm of the original Pong Game gameplay.
 
 ## Project Execution
 
 This Project is mainly divided into 2 seperate parts:
 
 1. Trainning of the NEAT Algorithm [Genetic Algorithm]
-2. Main Application that allows the User to play Pong against the trained AI
+2. Main Application that allows the User to play against the trained AI
 
 ### Train AI
 
