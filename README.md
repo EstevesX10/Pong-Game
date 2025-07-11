@@ -6,7 +6,7 @@
 </p>
 
 <p align="center" width="100%">
-    <img src="./Pong Game/Assets/Pong_Game.gif" width="50%" height="50%" />
+    <img src="./Pong Game/Assets/Pong_Game.gif" width="50%" />
 </p>
 
 <div align="center">
